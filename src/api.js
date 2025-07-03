@@ -1,15 +1,17 @@
 import axios from 'axios'
 
-const API_KEY = process.envRAPID_API_API_KEY;
+const API_KEY = process.env.REACT_APP_RAPID_API_API_KEY;
 console.log('RapidAPI Key used:', API_KEY);
 const API_URL = 'https://chatgpt-42.p.rapidapi.com/chat';
 
 export const getChatGPTResponse = async (userMessage) => {
+    // Refine the prompt to instruct the model
+    const refinedPrompt = `You are a helpful assistant for stock market queries. If the following question is related to the stock market, answer it. If not, reply only with: Sorry I didn't get that.\n\nUser question: ${userMessage}`;
     try {
         const response = await axios.post(
             API_URL,
             {
-                messages: [{ role: 'user', content: userMessage }],
+                messages: [{ role: 'user', content: refinedPrompt }],
                 model: 'gpt-4o-mini',
             },
             {
